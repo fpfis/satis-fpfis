@@ -1,0 +1,27 @@
+{
+    "name": "FPFIS composer repo",
+    "homepage": "https://repo.ne-dev.eu/composer",
+    "repositories": [
+        { "type": "composer", "url": "https://packagist.org" },
+        { "type": "composer", "url": "https://packages.drupal.org/7" },
+        { "type": "vcs", "url": "https://github.com/ec-europa/platform-deploy.git" },
+        { "type": "vcs", "url": "https://github.com/ec-europa/oe-task-runner.git" },
+        { "type": "vcs", "url": "https://github.com/ec-europa/toolkit.git" },
+        { "type": "vcs", "url": "https://github.com/ec-europa/ec-reps-platform.git" }
+    ],
+    "require-all": false,
+    "require" : { 
+      "ec-europa/oe-task-runner" : "*", 
+      "ec-europa/ec-reps-platform" : "*", 
+      "ec-europa/toolkit" : "*", 
+      "ec-europa/platform-deploy" : "*"
+    },
+    "require-dependencies": true,
+    "archive": {
+        "directory": "dist",
+        "format": "zip",
+        "skip-dev": true,
+        "whitelist" : [ "composer/*", "psr/*", "behat/*", "nuvoleweb/*", "drupal/*", "ec-europa/*", "ec-reps-platform/*" ],
+        "blacklist" : [ "drupal/drupal", "drupal/core" ]
+    }
+}

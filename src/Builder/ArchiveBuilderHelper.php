@@ -82,16 +82,26 @@ class ArchiveBuilderHelper
         }
 
         $names = $package->getNames();
-        if ($this->archiveConfig['whitelist'] && !array_intersect($this->archiveConfig['whitelist'], $names)) {
-            $this->output->writeln(sprintf("<info>Skipping '%s' (is not in whitelist)</info>", $name));
-
-            return true;
-        }
 
         if ($this->archiveConfig['blacklist'] && array_intersect($this->archiveConfig['blacklist'], $names)) {
             $this->output->writeln(sprintf("<info>Skipping '%s' (is in blacklist)</info>", $name));
 
             return true;
+        }
+
+        if ($this->archiveConfig['whitelist'] && !array_intersect($this->archiveConfig['whitelist'], $names)) {
+	  if (!empty($this->archiveConfig['whitelist']) && is_array($this->archiveConfig['whitelist'])) {
+            foreach($this->archiveConfig['whitelist'] as $regexWhitelist) {
+              $regex = str_replace('/', '\/', $regexWhitelist);
+              if(preg_match('/'.$regex.'/i', $name)) {
+                $this->output->writeln(sprintf("<info>Not skipping '%s' (is in regex whitelist)</info>", $name));
+                return false;
+              }
+            }
+          }
+          $this->output->writeln(sprintf("<info>Skipping '%s' (is not in whitelist)</info>", $name));
+
+          return true;
         }
 
         return false;
